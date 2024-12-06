@@ -18,32 +18,29 @@ jobs:
         with:
           tool-cache: false
           docker-images: false
-      - name: Setup Cuda
+      - name: Install NVIDIA Drivers
+        run: |
+          echo "Installing NVIDIA drivers and CUDA Toolkit..."
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            nvidia-driver-525
+      - name: Verify NVIDIA Driver and CUDA Installation
+        run: |
+          echo "Verifying NVIDIA driver and CUDA installation..."
+          nvidia-smi
+          nvcc --version
+      - name: Setup Cuda Toolkit
         uses: Jimver/cuda-toolkit@v0.2.19
         id: cuda-toolkit
         with:
           cuda: '12.5.0'
-      - name: Check cuda setup
+      - name: Check cuda setup Toolkit
         run: |
           echo "Installed cuda version is: ${{steps.cuda-toolkit.outputs.cuda}}"
           echo "Cuda install location: ${{steps.cuda-toolkit.outputs.CUDA_PATH}}"
           nvcc -V
       - name: Checkout
         uses: actions/checkout@v4
-
-      # - name: Install NVIDIA Drivers
-      #   run: |
-      #     echo "Installing NVIDIA drivers and CUDA Toolkit..."
-      #     sudo apt-get update
-      #     sudo apt-get install -y --no-install-recommends \
-      #       nvidia-driver-525 \
-      #       nvidia-cuda-toolkit
-      #     sudo systemctl restart nvidia-persistenced
-      # - name: Verify NVIDIA Driver and CUDA Installation
-      #   run: |
-      #     echo "Verifying NVIDIA driver and CUDA installation..."
-      #     nvidia-smi
-      #     nvcc --version
       - name: Setup Cog
         uses: replicate/setup-cog@v2
         with:
