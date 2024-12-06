@@ -18,35 +18,35 @@ jobs:
         with:
           tool-cache: false
           docker-images: false
-      # - name: Install NVIDIA Drivers
-      #   run: |
-      #     echo "Installing NVIDIA drivers and CUDA Toolkit..."
-      #     sudo apt-get update
-      #     sudo apt-get install -y --no-install-recommends \
-      #       nvidia-driver-525
-      # - name: Setup Cuda Toolkit
-      #   uses: Jimver/cuda-toolkit@v0.2.19
-      #   id: cuda-toolkit
-      #   with:
-      #     cuda: '12.5.0'
-      # - name: Verify NVIDIA Driver and CUDA Installation
-      #   run: |
-      #     echo "Verifying NVIDIA driver and CUDA installation..."
-      #     # nvidia-smi
-      #     nvcc --version
-      # - name: Check cuda setup Toolkit
-      #   run: |
-      #     echo "Installed cuda version is: ${{steps.cuda-toolkit.outputs.cuda}}"
-      #     echo "Cuda install location: ${{steps.cuda-toolkit.outputs.CUDA_PATH}}"
-      #     nvcc -V
-      # - name: Reboot system after instalation
-      #   run:  sudo reboot
-       # Step 1: Setup CUDA
-      - name: Set up NVIDIA CUDA
-        uses: nvidia/setup-cuda@v2
+      - name: Install NVIDIA Drivers
+        run: |
+          echo "Installing NVIDIA drivers and CUDA Toolkit..."
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            nvidia-driver-525
+      - name: Setup Cuda Toolkit
+        uses: Jimver/cuda-toolkit@v0.2.19
+        id: cuda-toolkit
         with:
-          version: '11.7'  # Atau versi CUDA yang sesuai dengan kebutuhan Anda
-          path: /usr/local/cuda-11.7
+          cuda: '12.5.0'
+      - name: Verify NVIDIA Driver and CUDA Installation
+        run: |
+          echo "Verifying NVIDIA driver and CUDA installation..."
+          # nvidia-smi
+          nvcc --version
+      - name: Check cuda setup Toolkit
+        run: |
+          echo "Installed cuda version is: ${{steps.cuda-toolkit.outputs.cuda}}"
+          echo "Cuda install location: ${{steps.cuda-toolkit.outputs.CUDA_PATH}}"
+          sudo reboot
+          nvcc -V
+      #   
+       # Step 1: Setup CUDA
+      # - name: Set up NVIDIA CUDA
+      #   uses: nvidia/setup-cuda@v2
+      #   with:
+      #     version: '11.7'  # Atau versi CUDA yang sesuai dengan kebutuhan Anda
+      #     path: /usr/local/cuda-11.7
       # Step 2: Check if GPU is available
       - name: Check GPU Availability
         run: |
