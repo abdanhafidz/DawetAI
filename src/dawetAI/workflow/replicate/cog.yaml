@@ -1,7 +1,7 @@
 image: "r8.im/abdanhafidz/dawet-ai"
 build:
-  gpu: true
-  cuda: "12.2"
+  # gpu: true
+  # cuda: "12.2"
   system_packages:
     - "wget"
     - "cmake"
