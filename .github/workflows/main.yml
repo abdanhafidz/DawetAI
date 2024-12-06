@@ -70,10 +70,6 @@ jobs:
           echo "Cleaning up zip file..."
           rm -f ujxa6r.zip
 
-      - name: Verify CUDA with PyTorch
-        run: |
-          python -c "import torch; print('CUDA Available:', torch.cuda.is_available())"
-
       - name: Push to Replicate
         working-directory: src/dawetAI/workflow/replicate
         run: |
