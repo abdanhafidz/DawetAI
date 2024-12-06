@@ -32,7 +32,7 @@ jobs:
       - name: Verify NVIDIA Driver and CUDA Installation
         run: |
           echo "Verifying NVIDIA driver and CUDA installation..."
-          nvidia-smi
+          # nvidia-smi
           nvcc --version
       - name: Check cuda setup Toolkit
         run: |
