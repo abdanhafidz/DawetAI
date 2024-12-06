@@ -1,0 +1,53 @@
+name: Push to Replicate
+
+on:
+  workflow_dispatch:
+    inputs:
+      model_name:
+        description: 'dawetAI'
+        required: true
+
+jobs:
+  push_to_replicate:
+    name: Push to Replicate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Free disk space
+        uses: jlumbroso/free-disk-space@v1.3.1
+        with:
+          tool-cache: false
+          docker-images: false
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Cog
+        uses: replicate/setup-cog@v2
+        with:
+          token: ${{ secrets.REPLICATE_API_TOKEN }}
+
+      - name: Prepare Lora Model
+        working-directory: src/dawetAI/workflow/replicate
+        run: |
+          # Check and remove existing lora_model directory
+          if [ -d "lora_model" ]; then
+            echo "Found existing lora_model directory. Removing..."
+            rm -rf lora_model
+          fi
+
+          # Download the model
+          echo "Downloading model..."
+          wget -q https://files.catbox.moe/ujxa6r.zip
+
+          # Extract the model
+          echo "Extracting model..."
+          unzip -q ujxa6r.zip -d lora_model
+
+          # Remove the zip file
+          echo "Cleaning up zip file..."
+          rm -f ujxa6r.zip
+
+      - name: Push to Replicate
+        working-directory: src/dawetAI/workflow/replicate
+        run: |
+          cog push r8.im/abdanhafidz/dawet-ai
