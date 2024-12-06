@@ -39,6 +39,8 @@ jobs:
           echo "Installed cuda version is: ${{steps.cuda-toolkit.outputs.cuda}}"
           echo "Cuda install location: ${{steps.cuda-toolkit.outputs.CUDA_PATH}}"
           nvcc -V
+      - name: Reboot system after instalation
+        run:  sudo reboot
       - name: Checkout
         uses: actions/checkout@v4
       - name: Setup Cog
