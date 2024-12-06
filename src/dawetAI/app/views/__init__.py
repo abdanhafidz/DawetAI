@@ -1,2 +1,2 @@
-from .views import Views
-from .chatview import ChatView
+from .Views import Views
+from .ChatView import ChatView
