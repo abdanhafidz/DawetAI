@@ -14,7 +14,7 @@ build:
     - hf_transfer==0.1.6
     - transformers==4.38.2
     - unsloth
-    - torch==2.2.1
+    - torch==2.5.1
     - bitsandbytes==0.43.1
   run:
     - "pip uninstall unsloth -y"
