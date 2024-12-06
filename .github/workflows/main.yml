@@ -3,7 +3,7 @@ name: Push to Replicate
 on:
   workflow_dispatch:
     inputs:
-      model_name:
+      change-detail:
         description: 'dawetAI'
         required: true
 
