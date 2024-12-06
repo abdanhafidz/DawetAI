@@ -8,7 +8,9 @@ on:
 jobs:
   push_to_replicate:
     name: Push to Replicate
-    runs-on: ubuntu-22.04
+    runs-on:
+      group: tj-runner-group
+      labels: tj-runner
     permissions:
       id-token: write
       contents: read
