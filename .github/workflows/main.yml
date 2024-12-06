@@ -13,6 +13,11 @@ jobs:
       id-token: write
       contents: read
     steps:
+      - name: Free disk space
+        uses: jlumbroso/free-disk-space@v1.3.1
+        with:
+          tool-cache: false
+          docker-images: false
       - name: Setup Cuda
         uses: Jimver/cuda-toolkit@v0.2.19
         id: cuda-toolkit
@@ -23,11 +28,6 @@ jobs:
           echo "Installed cuda version is: ${{steps.cuda-toolkit.outputs.cuda}}"
           echo "Cuda install location: ${{steps.cuda-toolkit.outputs.CUDA_PATH}}"
           nvcc -V
-      - name: Free disk space
-        uses: jlumbroso/free-disk-space@v1.3.1
-        with:
-          tool-cache: false
-          docker-images: false
       - name: Checkout
         uses: actions/checkout@v4
 
