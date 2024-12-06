@@ -18,38 +18,31 @@ jobs:
         with:
           tool-cache: false
           docker-images: false
-      - name: Install NVIDIA Drivers
+      # Step 1: Install NVIDIA drivers
+      - name: Install NVIDIA drivers
         run: |
-          echo "Installing NVIDIA drivers and CUDA Toolkit..."
           sudo apt-get update
-          sudo apt-get install -y --no-install-recommends \
-            nvidia-driver-525
-      - name: Setup Cuda Toolkit
-        uses: Jimver/cuda-toolkit@v0.2.19
-        id: cuda-toolkit
-        with:
-          cuda: '12.5.0'
-      - name: Verify NVIDIA Driver and CUDA Installation
+          sudo apt-get install -y software-properties-common
+          sudo add-apt-repository -y ppa:graphics-drivers/ppa
+          sudo apt-get update
+          sudo apt-get install -y nvidia-driver-525  # Ganti dengan versi driver yang sesuai
+          sudo modprobe nvidia  # Mengaktifkan driver NVIDIA tanpa reboot
+
+      # Step 2: Install CUDA Toolkit
+      - name: Install CUDA Toolkit
         run: |
-          echo "Verifying NVIDIA driver and CUDA installation..."
-          # nvidia-smi
+          wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-ubuntu2204.pin
+          sudo mv cuda-ubuntu2204.pin /etc/apt/preferences.d/cuda-repository-pin-600
+          sudo apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/3bf863cc.pub
+          sudo add-apt-repository "deb https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/ /"
+          sudo apt-get update
+          sudo apt-get install -y cuda-11-7  # Ganti dengan versi CUDA yang sesuai
+
+      # Step 3: Verify GPU and CUDA installation
+      - name: Verify NVIDIA GPU and CUDA
+        run: |
+          nvidia-smi
           nvcc --version
-      - name: Check cuda setup Toolkit
-        run: |
-          echo "Installed cuda version is: ${{steps.cuda-toolkit.outputs.cuda}}"
-          echo "Cuda install location: ${{steps.cuda-toolkit.outputs.CUDA_PATH}}"
-          nvcc -V
-      #   
-       # Step 1: Setup CUDA
-      # - name: Set up NVIDIA CUDA
-      #   uses: nvidia/setup-cuda@v2
-      #   with:
-      #     version: '11.7'  # Atau versi CUDA yang sesuai dengan kebutuhan Anda
-      #     path: /usr/local/cuda-11.7
-      # Step 2: Check if GPU is available
-      - name: Check GPU Availability
-        run: |
-          nvidia-smi  # Memeriksa apakah GPU terdeteksi dan driver berjalan dengan baik
       - name: Checkout
         uses: actions/checkout@v4
       - name: Setup Cog
