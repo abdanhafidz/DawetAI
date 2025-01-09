@@ -1,0 +1,20 @@
+
+from app.worker import Worker
+import asyncio
+import multiprocessing
+class WorkerPool:
+    def __init__(self):
+        self.queueWorker = []
+        self.finishedWorker = []
+    def addWorker(self, worker:Worker):
+        self.queueWorker.append(worker)
+    def removeWorker(self, worker:Worker):
+        self.queueWorker.remove(worker)
+    async def startWorker(self):
+        for worker in self.queueWorker:
+            multiprocessing.Process(
+                target = worker.getResult, 
+                args = worker.getArguments()
+                )
+
+

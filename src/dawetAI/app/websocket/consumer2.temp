@@ -1,0 +1,61 @@
+import json
+from channels.generic.websocket import AsyncWebsocketConsumer
+import redis
+import asyncio
+import uuid
+# from app.worker import WorkerPool, PredictWorker
+from app.services import PredictService
+import logging
+
+class PredictConsumer(AsyncWebsocketConsumer):
+    def __init__(self, service, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.predictService = service
+    async def connect(self):
+        try:
+            self.redis_client = redis.StrictRedis(
+                host='localhost',
+                port=6379,
+                db=0,
+                decode_responses=True
+            )
+            
+            await self.accept()
+            print("WebSocket connection established")
+        except Exception as e:
+            print(f"WebSocket connection error: {e}")
+            await self.close()
+
+    async def receive(self, text_data):
+        # predictWorker = PredictWorker(session_id, user_message)
+        data = json.loads(text_data)
+        user_message = data['message']
+        model = await self.predictService.getModel()
+
+        tokenizer = await self.predictService.getTokenizer()
+
+        messages = [
+            {"role": "user", "content": user_message}
+        ]
+        inputs = await tokenizer.apply_chat_template(
+            messages,
+            tokenize = True,
+            add_generation_prompt = True, # Must add for generation
+            return_tensors = "pt",
+        ).to("cuda")
+        output_ids = await model.generate(
+            input_ids=inputs["input_ids"],
+            max_new_tokens=128,
+            temperature=0.7,
+            do_sample=True,  # Sampling untuk hasil yang lebih variatif, atau gunakan `do_sample=False` untuk greedy decoding
+        )
+
+        # Dekode hasil secara langsung
+        output_text = await tokenizer.decode(output_ids[0], skip_special_tokens=True)
+        await self.send(text_data=json.dumps({
+            'status': 'end',
+            'response': output_text
+            }))
+            
+    async def disconnect(self, close_code):
+        print("WebSocket connection closed")

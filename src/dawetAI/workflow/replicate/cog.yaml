@@ -1,0 +1,23 @@
+image: "r8.im/abdanhafidz/dawet-ai"
+build:
+  gpu: true
+  cuda: "12.2"
+  system_packages:
+    - "wget"
+    - "cmake"
+    - "g++"
+    - "build-essential"
+  python_version: "3.11"
+  python_packages:
+    - cog==0.13.6
+    - huggingface_hub[cli]==0.20.3
+    - hf_transfer==0.1.6
+    - transformers==4.38.2
+    - unsloth
+    - torch==2.5.1
+    - bitsandbytes==0.43.1
+  run:
+    - "pip uninstall unsloth -y"
+    - "pip install --upgrade --no-cache-dir 'unsloth[colab-new] @ git+https://github.com/unslothai/unsloth.git'"
+
+predict: "predict.py:Predictor"
