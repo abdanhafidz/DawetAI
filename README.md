@@ -1,8 +1,19 @@
 ## Overview
+This research focused on the application of LoRA+ for transfer learning on Llama 3.2 1B to an Indonesian domain, via the Cendol Collections corpus published by IndoNLP.
 
-Me with my team doing research purposed to Machine Learning and Data Mining Final Project. The research explores the application of the Parameter-Efficient Finetuning (PEFT) method Low-Rank Adaptation+ (LoRA+) on the transfer learning of Llama 3.2 1B, a large language model (LLM). As LLMs continue to grow in size, conventional finetuning becomes increasingly challenging and this approach quickly becomes computationally infeasible. To address this, the application of finetuning could be applied efficiently to certain components only, methods which are also called PEFT. The PEFT method LoRA+ is tested within this research for the transfer learning of Llama 3.2 1B to a new linguistic domain, that is the Indonesian language, using the metrics BLEU, ROUGE, and Weighted F1. The results show that the application of the LoRA+ method yields competitive and superior performance compared to the baseline in Indonesian linguistic capabilities, with improvements of 112% in BLEU scores and 21.7% in ROUGE-L scores, while maintaining relatively low standard deviations of 3.72 and 0.00075, respectively. Though Weighted F1 scores showed an expected decline of 13% due to domain shift, the model demonstrated robust cross-lingual transfer capabilities.
+We (Me with my team) are doing this research purposed to Machine Learning and Data Mining Final Project. The research explores the application of the Parameter-Efficient Finetuning (PEFT) method Low-Rank Adaptation+ (LoRA+) on the transfer learning of Llama 3.2 1B, a large language model (LLM). As LLMs continue to grow in size, conventional finetuning becomes increasingly challenging and this approach quickly becomes computationally infeasible. To address this, the application of finetuning could be applied efficiently to certain components only, methods which are also called PEFT. The PEFT method LoRA+ is tested within this research for the transfer learning of Llama 3.2 1B to a new linguistic domain, that is the Indonesian language, using the metrics BLEU, ROUGE, and Weighted F1. The results show that the application of the LoRA+ method yields competitive and superior performance compared to the baseline in Indonesian linguistic capabilities, with improvements of 112% in BLEU scores and 21.7% in ROUGE-L scores, while maintaining relatively low standard deviations of 3.72 and 0.00075, respectively. Though Weighted F1 scores showed an expected decline of 13% due to domain shift, the model demonstrated robust cross-lingual transfer capabilities.
 
-My part in team was focused in **Model Deployment**.
+We use <a href="https://huggingface.co/datasets/indonlp/cendol_collection_v2">Cendol Collection </a> to fine tuning our model so it can be used for conversational in multilingualism for the languages given below : 
+- English
+- Indonesia, Bahasa
+- Melayu, Bahasa
+- Javanese
+- Tagalog
+- Sundanese
+- and other Asian language families
+
+You can see the notebook <a href="https://colab.research.google.com/drive/10-pVdwH1uNaW-t9HRrhk7tMQ58qD-0Fi?usp=sharing"> here </a>
+My part in team was focused for **Model Deployment** scope as MLOps Engineer.
 
 The final step in implementing a machine learning system is to ensure that the certified model can be implemented effectively. At this stage, ML operational engineers are responsible for answering critical infrastructure-related questions, such as how new data will be integrated into the model, whether predictions are made in batches or one at a time, acceptable latency tolerances, and mechanisms for user interaction with the system.
 
@@ -571,7 +582,7 @@ class PredictConsumer(AsyncWebsocketConsumer):
 ```
 
 ## Future Feature Development
-There are several improvement to do, somekind *Information Retrieval (IR)* from Wiki-pedia, Google, or other glosaries can be charged to the model loading process before the model predicting the result from the given prompt, we can customize it via prompt frame : 
+There are several improvement to do, somekind *Information Retrieval (IR)* from Wiki-pedia, Google, or other glosaries can be charged to the model loading process before predicting the result from given prompt, we can customize it via prompt frame : 
 
 ```python
 
