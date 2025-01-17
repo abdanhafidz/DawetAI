@@ -6,7 +6,7 @@ import os
 
 class PredictService(Service):
     def __init__(self):
-        model_path = os.path.abspath(os.path.join(os.getcwd(), "app", "websocket", "lora_model"))
+        model_path = os.path.abspath(os.path.join(os.getcwd(), "app", "trained_model", "lora_model"))
 
         from transformers import TextStreamer
         from unsloth import FastLanguageModel
